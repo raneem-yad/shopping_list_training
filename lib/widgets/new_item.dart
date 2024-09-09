@@ -38,7 +38,10 @@ class _NewItemState extends State<NewItem> {
           },
         ),
       );
-      // Navigator.of(context).pop();
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).pop();
     }
   }
 
