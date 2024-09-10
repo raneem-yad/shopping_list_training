@@ -16,7 +16,7 @@ class GroceryList extends StatefulWidget {
 class _GroceryListState extends State<GroceryList> {
   final List<GroceryItem> _groceryItems = [];
   bool _isLoading = true;
-  late String? _error;
+  String? _error;
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   void _goToItemScreen() async {
-    final GroceryItem newItem = await Navigator.of(context)
+    final GroceryItem? newItem = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (ctx) => const NewItem()));
 
     if (newItem == null) {
@@ -82,7 +82,7 @@ class _GroceryListState extends State<GroceryList> {
       _groceryItems.remove(item);
     });
 
-    final url = Uri.https('fudmeycourse-19dfa-default-rtdb.firebaseio.com',
+    final url = Uri.https('udmeycourse-19dfa-default-rtdb.firebaseio.com',
         'shopping-list/${item.id}.json');
 
     final response = await http.delete(url);
@@ -102,23 +102,6 @@ class _GroceryListState extends State<GroceryList> {
           const SnackBar(content: Text("Item was deleted successfully")));
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Groceries'),
-        actions: [
-          IconButton(
-            onPressed: _goToItemScreen,
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: _buildContent(),
-    );
-  }
-
   Widget _buildContent() {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -156,4 +139,22 @@ class _GroceryListState extends State<GroceryList> {
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Groceries'),
+        actions: [
+          IconButton(
+            onPressed: _goToItemScreen,
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: _buildContent(),
+    );
+  }
+
+
 }
